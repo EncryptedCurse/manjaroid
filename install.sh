@@ -41,7 +41,7 @@ cat <<- EOF > "$ROOTFS_DIR/../manjaroid.sh"
 	done
 
 	pulseaudio --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1 --start
-	proot --kill-on-exit --sysvipc -L -l -0 \$PROOT_MOUNTS -w \$HOME_DIR /usr/bin/env -i TERM=\$TERM /bin/sh --login
+	proot --kill-on-exit --sysvipc -L -l -0 \$PROOT_MOUNTS -w \$HOME_DIR /usr/bin/env -i TERM=\$TERM /bin/bash --login
 EOF
 chmod +x "$ROOTFS_DIR/../manjaroid.sh"
 
