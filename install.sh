@@ -323,6 +323,6 @@ msg "Starting intermediate setup script..."
 bash "$ROOTFS_DIR/../manjaroid.sh"
 
 # change launch script to start interactive shell using 'su' now that it's installed (for multi-user compatibility)
-sed -i 's/\/sh --login/\/su - $1/g' "$ROOTFS_DIR/../manjaroid.sh"
+sed -i 's/\/bash --login/\/su - $1/g' "$ROOTFS_DIR/../manjaroid.sh"
 
 msg "Done!"
