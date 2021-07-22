@@ -18,7 +18,7 @@ msg "Installing Termux prerequisites..."
 pkg update -y && pkg install -y proot pulseaudio
 
 # setup proot
-prompt "Installation directory (~/manjaroid):"; read -r ROOTFS_DIR
+prompt "Installation directory (~/manjaroid):"; read ROOTFS_DIR
 ROOTFS_DIR="$(eval echo "${ROOTFS_DIR:-~/manjaroid}")"
 mkdir -p "$ROOTFS_DIR"
 msg "Downloading Manjaro ARM rootfs + setting up proot environment..."
@@ -229,7 +229,7 @@ EOF
 
 # create intermediate setup script to run within proot environment
 msg "Creating intermediate setup script..."
-cat <<- EOF > "$ROOTFS_DIR/etc/profile.d/setup.sh"
+cat <<- EOF > "$ROOTFS_DIR/root/.bash_profile"
 	function msg { echo -e "${MSG_COLOR}\${1}${RESET_COLOR}"; }
 	function prompt { echo -ne "${PROMPT_COLOR}\${1}${RESET_COLOR} "; }
 
@@ -251,7 +251,7 @@ cat <<- EOF > "$ROOTFS_DIR/etc/profile.d/setup.sh"
 	echo "export TZ=\$(tzselect)" >> /etc/profile
 
 	# optional: create sudo user
-	prompt "Create sudo user? [Y/n]"; read -n 1 CREATE_USER
+	prompt "Create sudo user? [Y/n]"; read -n 1 CREATE_USER; echo
 	CREATE_USER=\${CREATE_USER:-n}
 	if [[ \$CREATE_USER =~ [yY] ]]; then
 		prompt "Sudo username (manjaro):"; read USERNAME
@@ -261,12 +261,10 @@ cat <<- EOF > "$ROOTFS_DIR/etc/profile.d/setup.sh"
 			%wheel ALL=(ALL) ALL
 			\$USERNAME ALL=(ALL) ALL
 		FEO
-	else
-		echo
 	fi
 
 	# optional: install and configure TigerVNC
-	prompt "Install TigerVNC? [Y/n]"; read -n 1 INSTALL_VNC
+	prompt "Install TigerVNC? [Y/n]"; read -n 1 INSTALL_VNC; echo
 	INSTALL_VNC=\${INSTALL_VNC:-n}
 	if [[ \$INSTALL_VNC =~ [yY] ]]; then
 		pacman -S --needed --noconfirm tigervnc
@@ -286,18 +284,14 @@ cat <<- EOF > "$ROOTFS_DIR/etc/profile.d/setup.sh"
 			[[ -r \$HOME/.Xresources ]] && xrdb \$HOME/.Xresources
 		FEO
 		chmod +x /etc/vnc/xstartup
-	else
-		echo
 	fi
 
 	# optional: install XFCE4
-	prompt "Install XFCE4? [Y/n]"; read -n 1 INSTALL_DE
+	prompt "Install XFCE4? [Y/n]"; read -n 1 INSTALL_DE; echo
 	INSTALL_DE=\${INSTALL_DE:-n}
 	if [[ \$INSTALL_DE =~ [yY] ]]; then
 		pacman -S --needed --noconfirm noto-fonts xfce4 xfce4-whiskermenu-plugin xfce4-pulseaudio-plugin pavucontrol
 		echo "exec dbus-launch startxfce4" >> /etc/vnc/xstartup
-	else
-		echo
 	fi
 
 	# delete pacman cache just in case
@@ -321,7 +315,7 @@ cat <<- EOF > "$ROOTFS_DIR/etc/profile.d/setup.sh"
 	fi
 
 	# delete intermediate setup script
-	chmod 777 /etc/profile.d/setup.sh && rm -rf /etc/profile.d/setup.sh
+	rm -rf /root/.bash_profile
 
 	exit
 EOF

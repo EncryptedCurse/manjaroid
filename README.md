@@ -43,6 +43,18 @@ If you decline to install XFCE4 during setup or decide to switch to something el
 exec dbus-launch <command>
 ```
 
+### Add (more) sudo users
+
+First, run the following command:
+```
+useradd -m -G wheel <username>
+```
+
+Then, append the following line to `/etc/sudoers`:
+```
+<username> ALL=(ALL) ALL
+```
+
 ### Disable XFCE4 shadows
 
 ```
