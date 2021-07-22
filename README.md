@@ -72,5 +72,7 @@ pacman -S firefox
 ### Install VS Code
 
 ```
-pacman -S code libsecret gnome-keyring
+pacman -S libsecret gnome-keyring xdg-utils code
 ```
+
+In order to access features that require a GitHub/Microsoft account (e.g. settings sync), ensure that you have a [web browser](#install-firefox) and the supplementary packages installed before attempting to login.
