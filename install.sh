@@ -290,7 +290,7 @@ cat <<- EOF > "$ROOTFS_DIR/root/.bash_profile"
 	prompt "Install XFCE4? [Y/n]"; read -n 1 INSTALL_DE; echo
 	INSTALL_DE=\${INSTALL_DE:-n}
 	if [[ \$INSTALL_DE =~ [yY] ]]; then
-		pacman -S --needed --noconfirm noto-fonts xfce4 xfce4-whiskermenu-plugin xfce4-pulseaudio-plugin pavucontrol
+		pacman -S --needed --noconfirm noto-fonts xfce4 xfce4-whiskermenu-plugin xfce4-pulseaudio-plugin gvfs pavucontrol
 		echo "exec dbus-launch startxfce4" >> /etc/vnc/xstartup
 	fi
 
