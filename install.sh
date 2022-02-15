@@ -22,7 +22,7 @@ prompt "Installation directory (~/manjaroid):"; read ROOTFS_DIR
 ROOTFS_DIR="$(eval echo "${ROOTFS_DIR:-~/manjaroid}")"
 mkdir -p "$ROOTFS_DIR"
 msg "Downloading Manjaro ARM rootfs + setting up proot environment..."
-ROOTFS_URL='https://osdn.net/projects/manjaro-arm/storage/.rootfs/Manjaro-ARM-aarch64-latest.tar.gz'
+ROOTFS_URL=$(curl -s "https://api.github.com/repos/manjaro-arm/rootfs/releases/latest" | grep -wo "https://github.com/manjaro-arm/rootfs/releases/download/.*/Manjaro-ARM-aarch64-latest.tar.gz")
 (curl -L --retry 5 "$ROOTFS_URL" | proot -l tar -C "$ROOTFS_DIR" --preserve-permissions --delay-directory-restore -xzf -) || exit 1
 rm -rf "${ROOTFS_DIR:?}/dev"
 
